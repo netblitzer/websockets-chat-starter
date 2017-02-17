@@ -1,0 +1,29 @@
+{
+  "name": "websockets-chat-starter",
+  "version": "1.0.0",
+  "description": "Websockets web UI chat server.",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "Echo \"Tests complete\"\u001b[D.\u001b[\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netblitzer/websockets-chat-starter.git"
+  },
+  "author": "Luke Miller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/netblitzer/websockets-chat-starter/issues"
+  },
+  "homepage": "https://github.com/netblitzer/websockets-chat-starter#readme",
+  "dependencies": {
+    "socket.io": "^1.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0"
+  }
+}

@@ -10,12 +10,86 @@
          online at your node.js address under /socket.io/socket.io.js 
          You can disable that on the server if desired
     -->
+    <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <script type="text/babel">
+      
+      const connectSocket = (e) => {
+        const message = document.querySelector('#message');
+        const chat = document.querySelector('#chat');
+        const send = document.querySelector('#send');
+        const socket = io.connect();
+        
+        socket.on('connect', () => {
+          console.log('Connecting...');
+          
+          console.dir(io);
+
+          let user = document.querySelector('#username').value;
+
+          if(!user) {
+             user = `User${Math.floor(Math.random() * 100)}`;
+          }
+
+          socket.emit('join', { name: user, });
+        });
+
+        socket.on('msg', (data) => {
+          const color = data.color || '#000';
+          
+          if (data.name == 'server') {
+            chat.innerHTML += "\n" + data.msg;
+          } else {
+            chat.innerHTML += "\n";
+            chat.innerHTML += "<em style='color: " + color + "; '>" + data.name + "</em>: " + data.msg;
+          }
+        });
+        
+        
+        const sendMessage = () => {
+          const message = document.querySelector('#message');
+          if (message.value) {
+            socket.emit('msgToServer', {
+              msg: message.value,
+            });
+            
+            message.value = "";
+          }
+        };
+        
+        send.addEventListener('click', sendMessage.bind(this));
+      };
+
+
+      const init = () => {
+        const connect = document.querySelector('#connect');
+        connect.addEventListener('click', connectSocket);
+      };
+
+      window.onload = init;
+    </script>
 	<style>
 		textarea {
 			display: block;
 			background-color: #EEEEEE;
 		}
+      pre {
+          white-space: pre-wrap;
+      }
+      #chatDiv {
+          margin-top: 10px;
+          width: 300px;
+          height: 300px;
+          background: #EEE;
+          display: block;
+          border: 1px solid #AAA;
+      }
+      #chatDiv #chat {
+          white-space: pre-wrap;
+      }
+      em {
+          font-style: normal;
+      }
 	</style>
 </head>
 <body>
@@ -26,7 +100,8 @@
 	<label for="message">Message:</label>
 	<input id="message" name="message" type="text"/>
 	<input id="send" type="button" value="send" />
-	
-	<textarea id="chat" rows="20" cols="40" readonly> </textarea>
+    <div id="chatDiv" >
+        <pre id="chat"></pre>
+    </div>
 </body>
 </html>
